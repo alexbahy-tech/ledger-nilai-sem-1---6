@@ -74,7 +74,7 @@ input,select,textarea{font-family:inherit}ul{list-style:none}fieldset{border:non
 /* SIDEBAR */
 .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);display:flex;flex-direction:column;height:100vh;flex-shrink:0;transition:var(--transition);overflow:hidden;z-index:100}
 .sidebar.collapsed{width:68px}
-.sidebar.collapsed .brand-text,.sidebar.collapsed .nav-label,.sidebar.collapsed .nav-section-label,.sidebar.collapsed .sidebar-footer span:not(.material-icons-round),.sidebar.collapsed #darkModeLabel{display:none}
+.sidebar.collapsed .brand-text,.sidebar.collapsed .nav-label,.sidebar.collapsed .nav-section-label,.sidebar.collapsed .sidebar-footer span:not(.material-icons-round),.sidebar.collapsed #darkModeLabel,.sidebar.collapsed .btn-back-label{display:none}
 .sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
 .brand{display:flex;align-items:center;gap:12px;overflow:hidden}
 .brand-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--primary),#7C3AED);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -95,6 +95,52 @@ input,select,textarea{font-family:inherit}ul{list-style:none}fieldset{border:non
 .btn-icon-text{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--sidebar-text);font-size:.82rem;font-weight:500;transition:var(--transition-fast);white-space:nowrap;width:100%;text-align:left}
 .btn-icon-text:hover{background:var(--sidebar-hover);color:#fff}
 .btn-icon-text .material-icons-round{font-size:18px;flex-shrink:0}
+
+/* BACK BUTTON — sidebar footer */
+.btn-back-home{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;margin:0;
+  border-radius:var(--radius-sm);
+  background:transparent;
+  border:1px solid rgba(37,99,235,.25);
+  color:#60A5FA;
+  font-size:.82rem;font-weight:600;
+  text-decoration:none;
+  transition:var(--transition-fast);
+  white-space:nowrap;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+.btn-back-home::before{
+  content:'';
+  position:absolute;inset:0;
+  border-radius:var(--radius-sm);
+  background:linear-gradient(90deg,rgba(37,99,235,.15),rgba(124,58,237,.1));
+  opacity:0;
+  transition:opacity .2s ease;
+}
+.btn-back-home:hover{
+  border-color:rgba(96,165,250,.5);
+  color:#93C5FD;
+  background:rgba(37,99,235,.08);
+}
+.btn-back-home:hover::before{opacity:1;}
+.btn-back-home .material-icons-round{
+  font-size:18px;flex-shrink:0;
+  transition:transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.btn-back-home:hover .material-icons-round{transform:translateX(-3px);}
+.btn-back-label{
+  flex:1;overflow:hidden;text-overflow:ellipsis;
+  display:flex;flex-direction:column;
+  line-height:1.2;
+}
+.btn-back-label span:first-child{font-weight:700;font-size:.82rem;}
+.btn-back-label span:last-child{font-size:.68rem;color:rgba(148,163,184,.65);font-weight:400;}
+.sidebar-footer-divider{
+  height:1px;background:rgba(255,255,255,.06);margin:4px 4px;
+}
 
 /* MAIN */
 .main-content{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
@@ -402,6 +448,18 @@ th.sort-asc .sort-icon,th.sort-desc .sort-icon{opacity:1;color:var(--primary)}
         <span class="material-icons-round">sync</span>
         <span>Refresh Data</span>
       </button>
+      <!-- DIVIDER -->
+      <div class="sidebar-footer-divider"></div>
+      <!-- TOMBOL KEMBALI KE BERANDA -->
+      <a href="https://alexbahy-tech.github.io/smartkurikulumsmkn1mt/"
+         class="btn-back-home"
+         title="Kembali ke Smart Kurikulum SMKN 1 MT">
+        <span class="material-icons-round">arrow_back</span>
+        <span class="btn-back-label">
+          <span>Kembali ke Beranda</span>
+          <span>Smart Kurikulum SMKN 1 MT</span>
+        </span>
+      </a>
     </div>
   </aside>
 
@@ -689,8 +747,8 @@ th.sort-asc .sort-icon,th.sort-desc .sort-icon{opacity:1;color:var(--primary)}
         </div>
 
         <div class="card" style="padding:24px">
-          <h3 style="font-size:.95rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px">
-            <span class="material-icons-round" style="color:var(--warning)">troubleshoot</span>Debug Koneksi GAS
+          <h3 style="font-size:.95rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span style="display:flex;align-items:center;gap:8px"><span class="material-icons-round" style="color:var(--warning)">troubleshoot</span>Debug Koneksi GAS</span>
           </h3>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn-outline" onclick="Settings.debugCols()">
@@ -829,21 +887,18 @@ const SEM = {
             'KK','PKK','Mapel Pilihan','Rata-Rata']
   },
   4: {
-    // FIXED: s=44 (AS), ditambah PJOK & Sejarah (kode lama salah mapping)
     s: 44,
     mapel: ['Pend. Agama','Pend. Pancasila','Bhs. Indonesia','PJOK','Sejarah',
             'Mulok','Matematika','Bhs. Inggris',
             'KK','PKK','Mapel Pilihan','Rata-Rata']
   },
   5: {
-    // FIXED: s=56 (BE) — lama s=54 (BC) SALAH
     s: 56,
     mapel: ['Pend. Agama','Pend. Pancasila','Bhs. Indonesia',
             'Mulok','Matematika','Bhs. Inggris',
             'KK','PKK','Mapel Pilihan','Rata-Rata']
   },
   6: {
-    // FIXED: s=66 (BO) — lama s=64 (BM) SALAH; mapel 10 (bukan 12)
     s: 66,
     mapel: ['Pend. Agama','Pend. Pancasila','Bhs. Indonesia',
             'Mulok','Matematika','Bhs. Inggris',
@@ -950,11 +1005,8 @@ function rowToSiswa(row, rowIndex) {
    FETCHER
 ══════════════════════════════════════════════ */
 const Fetcher = {
-  // Proxy list — dicoba satu per satu sampai berhasil
   proxies: [
-    // 0: Langsung (hanya works kalau browser support CORS dari Google)
     u => u,
-    // 1-4: Proxy publik dengan berbagai format
     u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
     u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
     u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
@@ -974,7 +1026,6 @@ const Fetcher = {
         const r = await fetch(url, {cache:'no-cache', signal:AbortSignal.timeout(12000)});
         if(r.ok){
           const text = await r.text();
-          // Validasi: CSV harus punya koma dan lebih dari 100 karakter
           if(text.length > 100 && (text.includes(',') || text.includes('\n'))){
             csv = text; break;
           } else {
@@ -983,8 +1034,6 @@ const Fetcher = {
         } else {
           lastStatus = r.status;
           lastErr = `HTTP ${r.status}`;
-          // 403 dari direct = spreadsheet private, langsung skip ke proxy
-          // 403 dari semua proxy = spreadsheet benar-benar private
         }
       } catch(e) {
         lastErr = e.message;
@@ -1576,7 +1625,7 @@ const InputNilai = {
     $$('#gasNilaiFields input').forEach(inp=>{
       const mapel=inp.dataset.mapel;const v=inp.value.trim();
       if(v==='')return;
-      if(mapel==='Rata-Rata')return; // jangan kirim rata-rata, biarkan formula sheets
+      if(mapel==='Rata-Rata')return;
       const num=parseFloat(v);
       if(isNaN(num)){invalidVal=true;return;}
       if(num<0||num>100){invalidVal=true;inp.style.borderColor='var(--danger)';return;}
@@ -1586,7 +1635,6 @@ const InputNilai = {
     if(invalidVal){Toast.show('Ada nilai yang tidak valid (harus angka 0–100).','error');return;}
     if(!hasValue){Toast.show('Isi minimal 1 nilai sebelum menyimpan.','warning');return;}
 
-    // Update state lokal dulu
     if(!s[`semester${sem}`])s[`semester${sem}`]={};
     Object.assign(s[`semester${sem}`],nilaiObj);
     Table.applyFilters();Nilai.onFilterChange();
